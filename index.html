@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A privacy-first AI product listing writer powered by a local open-weight model." />
+  <title>SideHustle Studio — AI Listing Writer</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="SideHustle Studio home">
+        <span class="brand-mark">✳</span>
+        <span>sidehustle<span class="brand-light">studio</span></span>
+      </a>
+      <div class="side-label">WORKSPACE</div>
+      <button class="nav-item active"><span>✦</span> Listing Writer <span class="nav-pill">AI</span></button>
+      <button class="nav-item" id="historyNav"><span>◷</span> Recent drafts</button>
+      <div class="sidebar-bottom">
+        <div class="privacy-card">
+          <div class="privacy-icon">⌁</div>
+          <strong>Your data stays yours.</strong>
+          <p>Connect to a local model to generate copy on your own computer.</p>
+          <span class="privacy-status"><i></i> Local-first by design</span>
+        </div>
+        <div class="profile">
+          <div class="avatar">SH</div>
+          <div><strong>Seller workspace</strong><small>Free starter plan</small></div>
+          <span class="dots">•••</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="breadcrumbs">Workspace <span>/</span> <strong>Listing Writer</strong></div>
+        <div class="top-actions"><span class="status-dot"></span><span id="connectionLabel">Demo mode</span><button class="help-button" id="setupBtn">Connect local AI ↗</button></div>
+      </header>
+
+      <section class="hero">
+        <div>
+          <div class="eyebrow"><span class="sparkle">✦</span> YOUR LITTLE BUSINESS, BIGGER</div>
+          <h1>Make your products<br /><em>impossible to scroll past.</em></h1>
+          <p class="hero-copy">Turn product details into clear, compelling listings in seconds.<br class="desktop-break" /> Made for independent sellers, powered by open AI.</p>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="art-sun"></div><div class="art-card card-back"></div>
+          <div class="art-card card-front"><span class="art-tag">HANDMADE</span><div class="art-flower">✿</div><div class="art-lines"><i></i><i></i><i></i></div></div>
+          <div class="art-star">✦</div>
+        </div>
+      </section>
+
+      <div class="workspace-grid">
+        <section class="panel input-panel">
+          <div class="panel-heading"><div><span class="step">01</span><h2>Tell us about your product</h2></div><span class="required-note">* Required</span></div>
+          <form id="listingForm">
+            <label for="productName">Product name <span>*</span></label>
+            <input id="productName" name="productName" required maxlength="100" placeholder="e.g. Hand-painted terracotta mug" />
+            <div class="two-col">
+              <div><label for="category">Category <span>*</span></label>
+                <select id="category" required>
+                  <option value="Home & living">Home & living</option><option>Fashion & accessories</option><option>Art & collectibles</option><option>Beauty & self-care</option><option>Food & drink</option><option>Digital product</option><option>Other</option>
+                </select>
+              </div>
+              <div><label for="platform">Where will you sell?</label>
+                <select id="platform"><option>Etsy</option><option>Instagram</option><option>Shopify</option><option>eBay</option><option>WhatsApp</option><option>My own website</option></select>
+              </div>
+            </div>
+            <label for="details">Product details <span>*</span></label>
+            <textarea id="details" required maxlength="1200" rows="5" placeholder="Materials, size, who it's for, what makes it special, how it's made…"></textarea>
+            <div class="char-count"><span>Be specific for better results.</span><span id="charCount">0 / 1200</span></div>
+            <div class="two-col">
+              <div><label for="tone">Brand voice</label><select id="tone"><option>Warm and friendly</option><option>Minimal and premium</option><option>Playful and bold</option><option>Professional</option><option>Rustic and handmade</option></select></div>
+              <div><label for="language">Output language</label><select id="language"><option>English</option><option>Hindi</option><option>Hinglish</option></select></div>
+            </div>
+            <div class="privacy-note"><span>⌁</span><div><strong>Privacy-first generation</strong><small>When connected, your product details go to your local Ollama model—not a cloud AI API.</small></div></div>
+            <button class="primary-button" type="submit" id="generateBtn"><span>✦</span> Generate my listing <span class="button-arrow">→</span></button>
+            <p class="fine-print">AI-generated copy can make mistakes. Check claims, measurements and platform rules before publishing.</p>
+          </form>
+        </section>
+
+        <section class="panel output-panel">
+          <div class="panel-heading output-heading"><div><span class="step">02</span><h2>Your listing, ready to polish</h2></div><span class="live-badge"><i></i> <span id="modeBadge">Preview</span></span></div>
+          <div id="emptyState" class="empty-state">
+            <div class="empty-illustration"><div class="paper"><span>✦</span><i></i><i></i><i></i><b>•••</b></div><div class="pen">✎</div></div>
+            <h3>Your next best-seller starts here.</h3>
+            <p>Fill in your product details and generate a listing. Your title, description and search tags will appear here.</p>
+            <div class="output-features"><span>✦ Search-friendly title</span><span>✦ Product description</span><span>✦ Search tags</span></div>
+          </div>
+          <div id="results" class="results hidden">
+            <div class="result-section"><div class="result-label">LISTING TITLE <button class="copy-btn" data-copy="title">Copy ↗</button></div><p id="resultTitle" class="result-title"></p></div>
+            <div class="result-section"><div class="result-label">PRODUCT DESCRIPTION <button class="copy-btn" data-copy="description">Copy ↗</button></div><p id="resultDescription" class="result-description"></p></div>
+            <div class="result-section"><div class="result-label">SEARCH TAGS <button class="copy-btn" data-copy="tags">Copy ↗</button></div><div id="resultTags" class="tags"></div></div>
+            <div class="result-section seo-box"><div class="result-label">QUICK SELLER CHECK</div><p id="sellerTip">Check that the title accurately describes the item and that all claims are true.</p></div>
+            <div class="result-actions"><button class="secondary-button" id="regenerateBtn">↻ Regenerate</button><button class="primary-button compact" id="copyAllBtn">Copy all content ↗</button></div>
+          </div>
+          <div id="loadingState" class="loading-state hidden"><div class="loader"></div><h3>Writing your listing…</h3><p>Giving your product the words it deserves.</p></div>
+          <div class="output-footer"><span>✳ Built for the independent seller</span><span id="draftStatus">No draft yet</span></div>
+        </section>
+      </div>
+      <footer class="page-footer"><span>SideHustle Studio</span><span>Open AI. Independent business. More possibilities.</span></footer>
+    </main>
+  </div>
+
+  <dialog id="setupDialog">
+    <div class="dialog-top"><div><span class="step">OPTIONAL SETUP</span><h2>Connect your local AI</h2></div><button class="close-dialog" id="closeDialog" aria-label="Close">×</button></div>
+    <p class="dialog-intro">Use an open-weight model on your own computer with <strong>Ollama</strong>. No API key or paid AI service required.</p>
+    <ol class="setup-steps">
+      <li><span>1</span><div><strong>Install Ollama</strong><p>Download it from <a href="https://ollama.com" target="_blank" rel="noreferrer">ollama.com</a>.</p></div></li>
+      <li><span>2</span><div><strong>Download a model</strong><code>ollama run qwen2.5:3b</code><p>Keep Ollama running while using this app.</p></div></li>
+      <li><span>3</span><div><strong>Allow local browser access</strong><p>In a terminal, start Ollama with browser access enabled, if needed:</p><code>OLLAMA_ORIGINS=* ollama serve</code><small>Windows PowerShell: <code>$env:OLLAMA_ORIGINS="*"; ollama serve</code></small></div></li>
+    </ol>
+    <div class="model-row"><label for="modelName">Model name</label><input id="modelName" value="qwen2.5:3b" /><label for="ollamaUrl">Ollama URL</label><input id="ollamaUrl" value="http://localhost:11434" /></div>
+    <p class="dialog-warning">If local AI is not connected, the app uses a built-in demo generator so you can still test the interface. Demo output is template-based, not generated by a model.</p>
+    <div class="dialog-actions"><button class="secondary-button" id="testConnection">Test connection</button><button class="primary-button compact" id="saveSettings">Save settings</button></div>
+    <p id="connectionMessage" class="connection-message" role="status"></p>
+  </dialog>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
